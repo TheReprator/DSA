@@ -1,0 +1,45 @@
+import kotlin.math.max
+
+fun main() {
+   // val result1 = longestPalindrome("babad")
+    val result = longestPalindrome("cbbd")
+    println(result)
+}
+
+val array = Array(1000) { IntArray(1000) {-1} }
+
+fun longestPalindrome(s: String): String {
+    val subArray = s.toCharArray()
+
+    var starPosition = 0
+    var maxLength = Integer.MIN_VALUE
+
+    for (i in 0..subArray.lastIndex) {
+        for (j in i..subArray.lastIndex) {
+            if(checkPalindrome(s, i, j)) {
+                if((j - i + 1) > maxLength) {
+                    maxLength = j - i + 1
+                    starPosition = i
+                }
+            }
+        }
+    }
+
+    return s.substring(starPosition, starPosition+maxLength)
+}
+
+fun checkPalindrome(string: String, i: Int, j: Int): Boolean {
+    if(i >= j)
+        return true
+
+    if(array[i][j] != -1)
+        return 1 == array[i][j]
+
+    if(string[i] == string[j])
+         array[i][j] = if(checkPalindrome(string, i+1, j-1))
+                            1
+                        else
+                            0
+
+    return 1 == array[i][j]
+}
